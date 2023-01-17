@@ -8,16 +8,18 @@ import (
 	"net"
 	"time"
 
-	"github.com/pablodz/audiosocket"
 	"github.com/gofrs/uuid"
+	"github.com/pablodz/audiosocket"
 	"github.com/pkg/errors"
 )
 
 // MaxCallDuration is the maximum amount of time to allow a call to be up before it is terminated.
 const MaxCallDuration = 2 * time.Minute
 
-const listenAddr = ":8080"
-const languageCode = "en-US"
+const (
+	listenAddr   = ":8080"
+	languageCode = "en-US"
+)
 
 // slinChunkSize is the number of bytes which should be sent per Slin
 // audiosocket message.  Larger data will be chunked into this size for
@@ -85,7 +87,6 @@ func Handle(pCtx context.Context, c net.Conn) {
 		if _, err := c.Write(audiosocket.HangupMessage()); err != nil {
 			log.Println("failed to send hangup message:", err)
 		}
-
 	}()
 
 	id, err := audiosocket.GetID(c)
@@ -146,7 +147,6 @@ func processDataFromAsterisk(ctx context.Context, cancel context.CancelFunc, in 
 }
 
 func sendAudio(w io.Writer, data []byte) error {
-
 	var i, chunks int
 
 	t := time.NewTicker(20 * time.Millisecond)
@@ -157,7 +157,7 @@ func sendAudio(w io.Writer, data []byte) error {
 			return nil
 		}
 
-		var chunkLen = slinChunkSize
+		chunkLen := slinChunkSize
 		if i+slinChunkSize > len(data) {
 			chunkLen = len(data) - i
 		}
