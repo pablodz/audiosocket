@@ -8,8 +8,8 @@ import (
 	"net"
 	"time"
 
-	"github.com/pablodz/audiosocket"
 	"github.com/gofrs/uuid"
+	"github.com/pablodz/audiosocket"
 	"github.com/pkg/errors"
 )
 
